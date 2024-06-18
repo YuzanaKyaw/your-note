@@ -12,7 +12,7 @@ class NoteController extends Controller
      */
     public function index()
     {
-        $notes = Note::query()->orderBy('created_at','desc')->paginate(5);
+        $notes = Note::query()->orderBy('created_at','desc')->paginate(6);
         // dd($notes);
 
         return view('note.index',['notes'=>$notes]);
@@ -21,7 +21,7 @@ class NoteController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         return view('note.create');
     }
@@ -31,23 +31,34 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'note' => 'required'
+        ]);
+        $data['userId'] = 1;
+
+        $note = Note::create($data);
+
+        return to_route('note.show',$note)->with(["message" => "Your note was created successfully!"]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Note $note)
+    public function show($id)
     {
-        return view('note.show');
+        $note = Note::where('id',$id)->first();
+        // dd($note->toArray());
+        return view('note.show',['note'=>$note]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Note $note)
+    public function edit($id)
     {
-        return view('note.edit');
+        $note = Note::where('id',$id)->first();
+        // dd($note);
+        return view('note.edit',['note'=>$note]);
     }
 
     /**
@@ -55,7 +66,13 @@ class NoteController extends Controller
      */
     public function update(Request $request, Note $note)
     {
-        //
+        $data = $request->validate([
+            'note' => 'required'
+        ]);
+
+        $note->query()->update($data);
+
+        return to_route('note.show',$note)->with(["message" => "Your note was updated successfully!"]);
     }
 
     /**
@@ -63,6 +80,15 @@ class NoteController extends Controller
      */
     public function destroy(Note $note)
     {
-        //
+
+        $note->query()->where('id',$note->id)->delete();
+
+        return to_route('note.index')->with(['message' => "Your note is delete successfully!"]);
     }
+
+    // private function dataValidation($request){
+    //     return $request->validate([
+    //         'note' => 'required'
+    //     ]);
+    // }
 }

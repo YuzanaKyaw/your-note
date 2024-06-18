@@ -16,12 +16,12 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'user_id' => 1,
-            'name' => 'Mg Mg',
-            'email' => 'mgmg@example.com',
-            'password' => bcrypt('12345678')
-        ]);
+        // User::factory()->create([
+        //     'user_id' => 1,
+        //     'name' => 'Mg Mg',
+        //     'email' => 'mgmg@example.com',
+        //     'password' => bcrypt('12345678')
+        // ]);
 
         Note::factory(20)->create();
     }
