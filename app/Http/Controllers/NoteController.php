@@ -12,7 +12,10 @@ class NoteController extends Controller
      */
     public function index()
     {
-        return "index";
+        $notes = Note::query()->orderBy('created_at','desc')->paginate(5);
+        // dd($notes);
+
+        return view('note.index',['notes'=>$notes]);
     }
 
     /**
@@ -20,7 +23,7 @@ class NoteController extends Controller
      */
     public function create()
     {
-        //
+        return view('note.create');
     }
 
     /**
@@ -36,7 +39,7 @@ class NoteController extends Controller
      */
     public function show(Note $note)
     {
-        //
+        return view('note.show');
     }
 
     /**
@@ -44,7 +47,7 @@ class NoteController extends Controller
      */
     public function edit(Note $note)
     {
-        //
+        return view('note.edit');
     }
 
     /**
